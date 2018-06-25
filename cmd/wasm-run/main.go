@@ -16,21 +16,13 @@ import (
 )
 
 func main() {
-	log.SetPrefix("wasm-run: ")
-	log.SetFlags(0)
-
-	verbose := flag.Bool("v", false, "enable/disable verbose mode")
-	verify := flag.Bool("verify-module", false, "run module verification")
 
 	flag.Parse()
 
 	if flag.NArg() < 1 {
-		flag.Usage()
-		flag.PrintDefaults()
+		fmt.Println("No file provided. Try again.")
 		os.Exit(1)
 	}
-
-	wasm.SetDebugMode(*verbose)
 
 	f, err := os.Open(flag.Arg(0))
 	if err != nil {
@@ -41,13 +33,6 @@ func main() {
 	m, err := wasm.ReadModule(f, importer)
 	if err != nil {
 		log.Fatalf("could not read module: %v", err)
-	}
-
-	if *verify {
-		err = validate.VerifyModule(m)
-		if err != nil {
-			log.Fatalf("could not verify module: %v", err)
-		}
 	}
 
 	if m.Export == nil {
