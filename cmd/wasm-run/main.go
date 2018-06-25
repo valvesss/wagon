@@ -35,7 +35,6 @@ func main() {
 		log.Fatalf("could not read module: %v", err)
 	}
 
-
 	if m.Export == nil {
 		log.Fatalf("module has no export section")
 	}
